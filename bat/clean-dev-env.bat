@@ -1,4 +1,3 @@
-@echo off
 REM ============================================
 REM clean development environments
 REM Author: kh4n
