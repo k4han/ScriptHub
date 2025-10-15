@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScriptHub - Community Shell Script Repository</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+      line-height: 1.6;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1f6feb 0%, #238636 100%);
+      padding: 40px 20px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .header h1 {
+      font-size: 2.2em;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .header p {
+      font-size: 1em;
+      opacity: 0.9;
+      margin-bottom: 15px;
+    }
+
+    .contribute-btn {
+      display: inline-block;
+      background: #21262d;
+      color: #58a6ff;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9em;
+      border: 1px solid #30363d;
+      transition: all 0.3s;
+    }
+
+    .contribute-btn:hover {
+      background: #30363d;
+      border-color: #58a6ff;
+      transform: translateY(-2px);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .warning {
+      background: #3d1e00;
+      border: 2px solid #f85149;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .warning h3 {
+      color: #f85149;
+      margin-bottom: 8px;
+      font-size: 1em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .warning ul {
+      margin-left: 20px;
+      margin-top: 8px;
+      font-size: 0.9em;
+    }
+
+    .warning li {
+      margin: 4px 0;
+    }
+
+    .search-box {
+      margin-bottom: 20px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      color: #c9d1d9;
+      font-size: 0.95em;
+      transition: border-color 0.3s;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #58a6ff;
+    }
+
+    .filter-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .tag {
+      background: #21262d;
+      padding: 6px 12px;
+      border-radius: 16px;
+      border: 1px solid #30363d;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.85em;
+    }
+
+    .tag:hover, .tag.active {
+      background: #238636;
+      border-color: #238636;
+    }
+
+    .script-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: all 0.3s;
+    }
+
+    .script-card:hover {
+      border-color: #58a6ff;
+      box-shadow: 0 4px 20px rgba(88, 166, 255, 0.1);
+    }
+
+    .script-title {
+      font-size: 1.3em;
+      font-weight: 600;
+      color: #58a6ff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .platform-badge {
+      font-size: 0.5em;
+      background: #21262d;
+      color: #8b949e;
+      padding: 3px 7px;
+      border-radius: 4px;
+      border: 1px solid #30363d;
+      font-weight: 500;
+    }
+
+    .platform-badge.linux {
+      background: #1f6feb20;
+      color: #58a6ff;
+      border-color: #1f6feb;
+    }
+
+    .platform-badge.windows {
+      background: #2ea04320;
+      color: #2ea043;
+      border-color: #238636;
+    }
+
+    .script-meta {
+      display: flex;
+      gap: 12px;
+      font-size: 0.8em;
+      color: #8b949e;
+      margin-bottom: 10px;
+    }
+
+    .script-description {
+      color: #8b949e;
+      margin-bottom: 12px;
+      font-size: 0.95em;
+    }
+
+    .script-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .script-tag {
+      background: #1f6feb20;
+      color: #58a6ff;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 0.75em;
+    }
+
+    .command-box {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    .command-box pre {
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85em;
+      color: #79c0ff;
+      margin: 0;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .btn {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.85em;
+      font-weight: 600;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-primary {
+      background: #238636;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #2ea043;
+    }
+
+    .btn-secondary {
+      background: #21262d;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+    }
+
+    .btn-secondary:hover {
+      background: #30363d;
+    }
+
+    .btn.copied {
+      background: #2ea043;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 30px 20px;
+      background: #161b22;
+      margin-top: 40px;
+      border-top: 1px solid #30363d;
+      font-size: 0.9em;
+    }
+
+    .footer a {
+      color: #58a6ff;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 40px 20px;
+      color: #8b949e;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 1.8em;
+      }
+      
+      .script-meta {
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🚀 ScriptHub</h1>
+    <p>Curated collection of shell installation scripts for Linux systems, contributed by the community</p>
+    <a href="https://github.com/k4han/ScriptHub" class="contribute-btn" target="_blank">
+      📝 Contribute
+    </a>
+  </div>
+
+  <div class="container">
+    <div class="warning">
+      <h3>⚠️ Security Warning</h3>
+      <ul>
+        <li>Always review source code before running with sudo!</li>
+        <li>Only use trusted, community-reviewed scripts</li>
+        <li>Download and review manually for best security</li>
+      </ul>
+    </div>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="🔍 Search scripts...">
+    </div>
+
+    <div class="filter-tags" id="filterTags"></div>
+
+    <div id="scripts"></div>
+    
+    <div class="no-results" id="noResults" style="display: none;">
+      <h3>No scripts found</h3>
+      <p>Try different keywords or contribute a new one!</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>
+      <strong>ScriptHub</strong> - Open Source<br>
+      <a href="https://github.com/k4han/ScriptHub" target="_blank">GitHub</a> | 
+      <a href="https://github.com/k4han/ScriptHub/blob/main/CONTRIBUTING.md" target="_blank">Contributing</a> | 
+      <a href="https://github.com/k4han/ScriptHub/blob/main/SECURITY.md" target="_blank">Security</a>
+    </p>
+  </div>
+
+  <script>
+    let allScripts = [];
+    let allTags = new Set();
+
+    async function copyText(text, btn) {
+      const label = btn.querySelector('.btn-label');
+      const prev = label.textContent;
+      
+      try {
+        await navigator.clipboard.writeText(text);
+        label.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          label.textContent = prev;
+          btn.classList.remove('copied');
+        }, 2000);
+      } catch (err) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        
+        label.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          label.textContent = prev;
+          btn.classList.remove('copied');
+        }, 2000);
+      }
+    }
+
+    function renderScripts(scripts) {
+      const container = document.getElementById('scripts');
+      const noResults = document.getElementById('noResults');
+      
+      if (scripts.length === 0) {
+        container.innerHTML = '';
+        noResults.style.display = 'block';
+        return;
+      }
+      
+      noResults.style.display = 'none';
+      container.innerHTML = scripts.map(script => {
+        const isBatchFile = script.file.endsWith('.bat');
+        const fileExtension = isBatchFile ? '.bat' : '.sh';
+        const folder = isBatchFile ? 'bat' : 'sh';
+        const platform = isBatchFile ? 'Windows' : 'Linux/macOS';
+        const platformClass = isBatchFile ? 'windows' : 'linux';
+        
+        const baseUrl = 'https://k4han.github.io/ScriptHub';
+        const rawGitUrl = 'https://raw.githubusercontent.com/k4han/ScriptHub/main';
+        const githubUrl = 'https://github.com/k4han/ScriptHub/blob/main';
+        
+        const scriptUrl = `${baseUrl}/${folder}/${script.file}`;
+        const viewSourceUrl = `${githubUrl}/${folder}/${script.file}`;
+        
+        const cmd = isBatchFile 
+          ? `irm ${scriptUrl} | iex`
+          : `curl -fsSL ${scriptUrl} | sudo bash`;
+        
+        const scriptId = script.file
+          .replace(fileExtension, '')
+          .replace(/[^a-z0-9]/gi, '-');
+        
+        return `
+          <div class="script-card" data-tags="${(script.tags || []).join(',')}">
+            <h2 class="script-title">
+              ${script.name}
+              <span class="platform-badge ${platformClass}">${platform}</span>
+            </h2>
+            <div class="script-meta">
+              <span>👤 ${script.author || 'Anonymous'}</span>
+              <span>📅 ${script.updated || 'N/A'}</span>
+            </div>
+            <p class="script-description">${script.description}</p>
+            ${script.tags && script.tags.length > 0 ? `
+              <div class="script-tags">
+                ${script.tags.map(tag => `<span class="script-tag">${tag}</span>`).join('')}
+              </div>
+            ` : ''}
+            <div class="command-box">
+              <pre id="cmd-${scriptId}">${cmd}</pre>
+            </div>
+            <div class="action-buttons">
+              <button class="btn btn-primary copy-btn" data-target="cmd-${scriptId}">
+                <span class="btn-label">Copy</span>
+              </button>
+              <a href="${viewSourceUrl}" target="_blank" class="btn btn-secondary">
+                👁️ View
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('data-target');
+          const el = document.getElementById(targetId);
+          if (el) copyText(el.textContent, btn);
+        });
+      });
+
+      // Add download button handlers
+      container.querySelectorAll('.download-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const url = btn.getAttribute('data-url');
+          const filename = btn.getAttribute('data-filename');
+          
+          try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(downloadUrl);
+          } catch (err) {
+            console.error('Download failed:', err);
+            alert('Download failed. Please try "View" to see the source.');
+          }
+        });
+      });
+    }
+
+    function renderTags() {
+      const container = document.getElementById('filterTags');
+      if (allTags.size === 0) return;
+      
+      container.innerHTML = `
+        <div class="tag active" data-tag="all">All</div>
+        ${[...allTags].sort().map(tag => 
+          `<div class="tag" data-tag="${tag}">${tag}</div>`
+        ).join('')}
+      `;
+      
+      container.querySelectorAll('.tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+          container.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+          tag.classList.add('active');
+          
+          const selectedTag = tag.getAttribute('data-tag');
+          if (selectedTag === 'all') {
+            renderScripts(allScripts);
+          } else {
+            const filtered = allScripts.filter(s => 
+              s.tags && s.tags.includes(selectedTag)
+            );
+            renderScripts(filtered);
+          }
+        });
+      });
+    }
+
+    function setupSearch() {
+      const searchInput = document.getElementById('searchInput');
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        if (!query) {
+          renderScripts(allScripts);
+          return;
+        }
+        
+        const filtered = allScripts.filter(script => {
+          const searchText = [
+            script.name,
+            script.description,
+            script.author,
+            ...(script.tags || [])
+          ].join(' ').toLowerCase();
+          
+          return searchText.includes(query);
+        });
+        
+        renderScripts(filtered);
+      });
+    }
+
+    async function loadScripts() {
+      try {
+        const res = await fetch('scripts.json');
+        allScripts = await res.json();
+        
+        allScripts.forEach(script => {
+          if (script.tags) {
+            script.tags.forEach(tag => allTags.add(tag));
+          }
+        });
+        
+        renderTags();
+        renderScripts(allScripts);
+        setupSearch();
+      } catch (err) {
+        console.error('Failed to load scripts:', err);
+        document.getElementById('scripts').innerHTML = `
+          <div class="warning">
+            <h3>❌ Error Loading Scripts</h3>
+            <p>Please check scripts.json or try again later</p>
+          </div>
+        `;
+      }
+    }
+
+    loadScripts();
+  </script>
+</body>
+</html>

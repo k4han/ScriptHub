@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Setup zRAM",
+    "description": "Configure zRAM to boost swap performance on systems with limited RAM. Automatically detects RAM capacity and sets appropriate zRAM ratios.",
+    "file": "setup-zram.sh",
+    "author": "k4han",
+    "updated": "2025-10-15",
+    "tags": ["performance", "memory", "ubuntu"]
+  },
+  {
+    "name": "clean development environments",
+    "description": "A Windows batch script to clean up Python virtual environments and pyenv installations, helping to free up disk space and remove unused development files.",
+    "file": "clean-dev-env.bat",
+    "author": "k4han",
+    "updated": "2025-10-08",
+    "tags": ["cleanup", "windows"]
+  },
+  {
+    "name": "setup swapfile",
+    "description": "A script to create and configure a swap file on Linux systems, enhancing system performance by providing additional virtual memory.",
+    "file": "setup-swapfile.sh",  
+    "author": "k4han",
+    "updated": "2025-10-15",
+    "tags": ["performance", "memory", "ubuntu"]
+  }
+]
